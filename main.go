@@ -165,7 +165,7 @@ loop:
 				}
 				rtt_ms = float64(rtt_tot) / (float64(count) * float64(time.Millisecond))
 				log.Printf("%f\n", rtt_ms)
-				rtt.Add(float64(rtt_ms))
+				rtt.Set(float64(rtt_ms))
 				rtt_set = nil
 			}
 		}
