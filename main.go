@@ -28,10 +28,10 @@ var (
 	rtt_ms  float64
 	i       int32
 	rtt     = prometheus.NewGauge(prometheus.GaugeOpts{
-		Namespace: "ping_google",
+		Namespace: "ping_time",
 		Subsystem: "network",
 		Name:      "rtt",
-		Help:      "network round trip time for pings to google.com",
+		Help:      "network round trip time for pings to target host",
 	})
 	host        string = ""
 	port        string = ""
