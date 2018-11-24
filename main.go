@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/coreos/go-systemd/daemon"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/spf13/viper"
@@ -108,6 +109,21 @@ func main() {
 		http.Handle("/metrics", promhttp.Handler())
 		url := fmt.Sprintf(":%s", port)
 		log.Fatal(http.ListenAndServe(url, nil))
+	}()
+
+	daemon.SdNotify(false, "READY=1")
+	ticker2 := time.NewTicker(time.Second * 15)
+	go func() {
+		for t := range ticker2.C {
+			_ = t
+			url := fmt.Sprintf("http://localhost:%s", port)
+			_, err := http.Get(url)
+			if err != nil {
+				log.Println("internal health check failed")
+			} else {
+				daemon.SdNotify(false, "WATCHDOG=1")
+			}
+		}
 	}()
 
 loop:
