@@ -1,0 +1,14 @@
+[Unit]
+Description=PingMon Host Network Use Exporter
+Wants=network.target
+After=network.target
+
+
+[Service]
+Type=notify
+ExecStart=/usr/local/bin/pingmon
+WatchdogSec=30s
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
